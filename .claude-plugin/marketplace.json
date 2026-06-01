@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ai-config-tools",
+  "description": "Team marketplace for AI coding-tool utilities.",
+  "owner": {
+    "name": "TODO: your name or team",
+    "email": "TODO: you@example.com"
+  },
+  "plugins": [
+    {
+      "name": "migrate-ai-config",
+      "description": "Interactively migrate Claude Code and/or Codex config between macOS, Windows, and Linux.",
+      "source": "./plugins/migrate-ai-config",
+      "category": "productivity"
+    }
+  ]
+}
