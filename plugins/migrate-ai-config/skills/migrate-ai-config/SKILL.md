@@ -64,7 +64,7 @@ Codex:        .codex/{config.toml, AGENTS.md}  +  .codex/prompts/
 ```
 .claude/.credentials.json  → run `claude` and sign in   (macOS = Keychain)
 .codex/auth.json           → run `codex login`
-.claude/plugins/cache,data → reinstall via /plugin
+.claude/plugins/cache,data → reinstall via CLI (see "Reinstall plugins + MCP" below)
 .claude.json projects/     → regenerates per machine
 ```
 
