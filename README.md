@@ -6,15 +6,25 @@ It interviews you for source OS, target OS, and which tools to move, then emits 
 
 ## Install
 
-Add this repo as a marketplace, then install the plugin:
+Add this marketplace, then install the plugin — run both in any Claude Code session:
 
 ```
-/plugin marketplace add <git-url-or-local-path>
+/plugin marketplace add digitaljavelina/migrate-ai-config
 /plugin install migrate-ai-config@ai-config-tools
 ```
 
-- **From GitHub:** `/plugin marketplace add your-org/migrate-ai-config`
-- **From a local clone:** `/plugin marketplace add /path/to/migrate-ai-config`
+The `owner/repo` shorthand clones over HTTPS, which needs no SSH key setup. If you prefer an explicit URL, use the HTTPS form (**not** the SSH form, which fails without a known host key):
+
+```
+/plugin marketplace add https://github.com/digitaljavelina/migrate-ai-config.git
+```
+
+To install from a local clone instead:
+
+```
+/plugin marketplace add /path/to/migrate-ai-config
+/plugin install migrate-ai-config@ai-config-tools
+```
 
 Restart Claude Code (or reload) so the new skill is discovered.
 
@@ -51,9 +61,18 @@ migrate-ai-config/                       # marketplace repo root
 └── README.md
 ```
 
-## Before publishing
+## Releasing a new version
 
-Edit the `TODO:` author/owner fields in `.claude-plugin/marketplace.json` and `plugins/migrate-ai-config/.claude-plugin/plugin.json`, then push to a git host your team can reach.
+1. Bump `"version"` in `plugins/migrate-ai-config/.claude-plugin/plugin.json`, commit, and push to `main`.
+2. Tag it to match (tag uses a `v` prefix; the manifest stays bare):
+   ```
+   gh release create v1.0.4 --repo digitaljavelina/migrate-ai-config --target main --title v1.0.4 --notes "..."
+   ```
+3. Consumers pull it with:
+   ```
+   /plugin marketplace update ai-config-tools
+   /plugin update migrate-ai-config@ai-config-tools
+   ```
 
 ## License
 
