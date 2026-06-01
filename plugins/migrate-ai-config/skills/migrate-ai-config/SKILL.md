@@ -30,18 +30,20 @@ The 9 OS combinations collapse to three shapes. Treat **macOS and Linux as ident
 
 Same-OS with the **same username** = no path rewrite at all; the playbook is just copy + re-auth + reinstall plugins.
 
-## Step 3 — Gather specifics
+## Step 3 — Follow-up questions (AskUserQuestion)
 
-Ask (in plain chat, not AskUserQuestion) only what the shape needs:
-- If the home prefix or username changes: the **old** and **new** usernames.
-- INTERP shape: confirm whether they'll use **Git Bash** (keep `.sh` hooks, wrap in `bash`) or **rewrite hooks to PowerShell**. Default to Git Bash.
+Ask only what the classified shape needs. Each is an `AskUserQuestion`; the user can always pick **Other** to type a free-text value — that is how usernames and custom paths are captured.
+
+- **Source username** — whenever the shape rewrites paths (any Windows endpoint, or Unix→Unix where the home prefix changes). Ask: "What's your username on the SOURCE machine? (the `<X>` in `C:\Users\<X>`, `/Users/<X>`, or `/home/<X>`)". Offer options like `Same as this machine's username` and `Use a placeholder I'll edit later`; the user selects **Other** to type the real one. Substitute it into the source home prefix — the target side resolves via `$HOME`.
+- **Output directory** — only when the deliverable is a Markdown file. Ask: "Where should I save the playbook?". Offer `Current directory` and `A different folder`; the user selects **Other** to type a path. Default to the current working directory.
+- **INTERP shape only** — ask (AskUserQuestion) whether to use **Git Bash** (keep `.sh` hooks, wrap in `bash`) or **rewrite hooks to PowerShell**. Default Git Bash.
 
 ## Step 4 — Emit the playbook
 
 Assemble from the building blocks below, in this order, including a section per selected tool:
 **Prepare target → Export from source → Transfer → Restore Claude Code → Restore Codex → Gotchas → Verification checklist.**
 
-Drop any block the shape doesn't need. Substitute real usernames/paths. If the deliverable is a file, write it to `<Source>-to-<Target>-AI-Migration.md` in the current directory (ask where if the user prefers another location); otherwise print inline.
+Drop any block the shape doesn't need. Substitute the username/paths captured in Step 3. If the deliverable is a file, write `<Source>-to-<Target>-AI-Migration.md` to the directory chosen in Step 3 (default: current working directory); otherwise print inline.
 
 ---
 
@@ -103,9 +105,13 @@ sed -i '' "s#C:\\\\Users\\\\<you>#$HOME#g; s#\\\\#/#g" ~/.claude/settings.json
 
 ### Reinstall plugins + MCP (all shapes)
 
-```
-/plugin                              # re-add marketplaces, reinstall each plugin
-claude mcp add <name> -- <cmd> ...   # from the saved mcpServers block
+```bash
+# Plugins — registry copied, but binaries are platform-specific, so reinstall via CLI:
+claude plugin marketplace add <source>        # for each entry in known_marketplaces.json
+claude plugin install <name>@<marketplace>    # for each entry in installed_plugins.json
+
+# MCP servers — from the saved mcpServers block (drop any Windows `cmd /c` wrapper):
+claude mcp add <name> -- <command> <args...>
 ```
 
 ### Verification (all shapes)
