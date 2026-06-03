@@ -1,3 +1,8 @@
+> [!IMPORTANT]
+> **This repository is no longer maintained.**
+> This skill has moved to [digitaljavelina/claude-plugins](https://github.com/digitaljavelina/claude-plugins) and is now updated there.
+> Please use that repository for the latest version.
+
 # ai-config-tools — Claude Code plugin marketplace
 
 A small marketplace hosting the **`migrate-ai-config`** plugin: an interactive helper that migrates **Claude Code** and **OpenAI Codex** configuration (skills, hooks, plugins, commands, agents, MCP servers, prompts, settings) between **macOS, Windows, and Linux**.
